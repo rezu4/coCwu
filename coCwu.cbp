@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="coCwu" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/coCwu" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="C:/tapio-rlutil-821fdca" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="arduino_pollyfils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="include/BaseDisplay.h" />
+		<Unit filename="include/Menu.h" />
+		<Unit filename="include/MenuItem.h" />
+		<Unit filename="include/WindowsDisplay.h" />
+		<Unit filename="include/arduino_pollyfils.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/BaseDisplay.cpp" />
+		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/MenuItem.cpp" />
+		<Unit filename="src/WindowsDisplay.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -3,6 +3,8 @@
 
 #include "WindowsDisplay.h"
 #include "Menu.h"
+#include "MenuInt.h"
+
 #include "arduino_pollyfils.h"
 using namespace std;
 
@@ -28,7 +30,12 @@ int main()
     uint8_t action=0;
     //Sleep(5000);
     Menu main("main");
-    Menu::currentMenu = &main;
+
+    MenuInt mi("int example",10,50,"[C]");
+
+    //Menu::currentMenu = &main;
+    Menu::currentMenu = &mi;
+
     Menu::display = &windows_lcd_display;
 
     Menu o1(&main,"option1");

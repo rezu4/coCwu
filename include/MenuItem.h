@@ -18,7 +18,7 @@ class MenuItem
         uint8_t idx;
         virtual const char* getLabel();
         virtual void update(uint8_t action, uint64_t ms) =0;
-        virtual void redraw()=0;
+        bool redrawRequired = true;
     protected:
 
     private:

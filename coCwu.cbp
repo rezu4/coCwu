@@ -27,12 +27,14 @@
 		</Unit>
 		<Unit filename="include/BaseDisplay.h" />
 		<Unit filename="include/Menu.h" />
+		<Unit filename="include/MenuInt.h" />
 		<Unit filename="include/MenuItem.h" />
 		<Unit filename="include/WindowsDisplay.h" />
 		<Unit filename="include/arduino_pollyfils.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/BaseDisplay.cpp" />
 		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/MenuInt.cpp" />
 		<Unit filename="src/MenuItem.cpp" />
 		<Unit filename="src/WindowsDisplay.cpp" />
 		<Extensions>

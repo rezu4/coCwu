@@ -11,8 +11,8 @@ class Menu : public MenuItem
         Menu(MenuItem* parent, char const * label);
         virtual void setItems( MenuItem** items, uint8_t items_count);
         virtual void update(uint8_t action, uint64_t ms);
-        virtual void redraw();
         static MenuItem* currentMenu;
+        static void setCurrentMenu(MenuItem* menu);
         static BaseDisplay* display;
 
     protected:
@@ -26,6 +26,7 @@ class Menu : public MenuItem
         MenuItem** _items;
         uint8_t _items_count;
         void updateBlink(uint64_t ms);
+        void redraw();
 };
 
 #endif // MENU_H

@@ -4,6 +4,7 @@
 #include "WindowsDisplay.h"
 #include "Menu.h"
 #include "MenuInt.h"
+#include "MenuSelect.h"
 
 #include "arduino_pollyfils.h"
 using namespace std;
@@ -32,9 +33,12 @@ int main()
     Menu main("main");
 
     MenuInt mi(&main, "int example",10,50,"[C]");
+    char const * selectOptions[] = {"select1", "s2", "select3"};
+
+    MenuSelect ms(&main,9"select ex",selectOptions, 3);
 
     Menu::currentMenu = &main;
-    //Menu::currentMenu = &mi;
+    //Menu::currentMenu = &ms;
 
     Menu::display = &windows_lcd_display;
 
@@ -48,7 +52,7 @@ int main()
     Menu o2(&main,"option2");
     Menu o3(&main,"option3");
     Menu o4(&main,"option4");
-    MenuItem* mainItems[] = {&o1, &mi, &o2, &o3, &o4};
+    MenuItem* mainItems[] = {&o1, &mi, &ms, &o2, &o3, &o4};
 
 
     main.setItems(mainItems, sizeof(mainItems)/sizeof(MenuItem*));

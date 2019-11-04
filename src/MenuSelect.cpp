@@ -1,5 +1,6 @@
 #include "MenuSelect.h"
 #include "Menu.h"
+#include <cstring>
 
 MenuSelect::MenuSelect(char const * label, char const** options, uint8_t optionCount): MenuItem(label)
 {
@@ -93,7 +94,24 @@ void MenuSelect::update(uint8_t action, uint64_t ms)
 
     if (refreshValue)
     {
-        Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, *(_options+_curValue),DISPLAY_ALIGN_CENTER,8);
+        //_template
+        char const * s = *(_options+_curValue);
+        uint8_t l=strlen(s);
+        for (uint8_t i=0;i<l;i++)
+        {
+            _template[i]=*(s+i);
+        }
+        if (_curValue==value)
+        {
+            _template[l]=' ';
+            _template[l+1]='*';
+            _template[l+2]=char(0);
+        }
+        else
+        {
+            _template[l]=char(0);
+        }
+        Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
         return;
     }
 
@@ -109,7 +127,7 @@ void MenuSelect::update(uint8_t action, uint64_t ms)
 
             if (_blinkState)
             {
-                Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, *(_options+_curValue),DISPLAY_ALIGN_CENTER,8);
+                Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
             }
             else
             {

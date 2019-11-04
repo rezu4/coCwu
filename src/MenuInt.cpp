@@ -14,6 +14,8 @@ MenuInt::MenuInt(char const * label, uint16_t min, uint16_t max, char const * un
     }
 }
 
+uint16_t MenuInt::_curValue=0;
+
 MenuInt::MenuInt(MenuItem* parent, char const * label, uint16_t min, uint16_t max, char const * unit): MenuItem(parent, label)
 {
     _unit = unit;
@@ -34,19 +36,21 @@ void MenuInt::update(uint8_t action, uint64_t ms)
     {
         if (_editState)
         {
-             value = _curValue;
+            value = _curValue;
         }
-        else {
+        else
+        {
            _curValue = value;
         }
         _editState = !_editState;
+
         refreshValue = true;
     }
     else if (action==MENU_ACTION_ESC)
     {
         if (_editState)
         {
-            _editState =0;
+            _editState =false;
             _curValue = value;
             refreshValue = true;
         }
@@ -87,17 +91,21 @@ void MenuInt::update(uint8_t action, uint64_t ms)
         }
     }
 
-    if (refreshValue || redrawRequired)
-    {
-        itoa(_curValue, _template, 10);
-        Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
-    }
-
     if (redrawRequired)
     {
+        Menu::display->clearLine(0);
+        Menu::display->clearLine(1);
         Menu::display->print((uint8_t)15, (uint8_t)0, _unit,DISPLAY_ALIGN_RIGHT);
         Menu::display->print(Menu::display->getCols()/2, (uint8_t)1, label,DISPLAY_ALIGN_CENTER);
         redrawRequired = false;
+        refreshValue = true;
+    }
+
+    if (refreshValue)
+    {
+        itoa(_curValue, _template, 10);
+        Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
+        return;
     }
 
     if (_editState)
@@ -109,12 +117,12 @@ void MenuInt::update(uint8_t action, uint64_t ms)
             _blinkState=!_blinkState;
             _lastBlink = ms;
 
-
             if (_blinkState)
             {
                 Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
             }
-            else {
+            else
+            {
                  Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, "",DISPLAY_ALIGN_CENTER,8);
             }
         }

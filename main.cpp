@@ -31,10 +31,10 @@ int main()
     //Sleep(5000);
     Menu main("main");
 
-    MenuInt mi("int example",10,50,"[C]");
+    MenuInt mi(&main, "int example",10,50,"[C]");
 
-    //Menu::currentMenu = &main;
-    Menu::currentMenu = &mi;
+    Menu::currentMenu = &main;
+    //Menu::currentMenu = &mi;
 
     Menu::display = &windows_lcd_display;
 
@@ -48,7 +48,7 @@ int main()
     Menu o2(&main,"option2");
     Menu o3(&main,"option3");
     Menu o4(&main,"option4");
-    MenuItem* mainItems[] = {&o1, &o2, &o3, &o4};
+    MenuItem* mainItems[] = {&o1, &mi, &o2, &o3, &o4};
 
 
     main.setItems(mainItems, sizeof(mainItems)/sizeof(MenuItem*));

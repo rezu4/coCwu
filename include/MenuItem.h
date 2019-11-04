@@ -20,7 +20,10 @@ class MenuItem
         virtual void update(uint8_t action, uint64_t ms) =0;
         bool redrawRequired = true;
     protected:
-
+        static uint64_t _lastBlink;
+        static uint8_t _blinkState;
+        static char _template[];
+        static bool _editState;
     private:
 };
 

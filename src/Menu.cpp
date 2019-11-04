@@ -30,15 +30,14 @@ void Menu::setItems( MenuItem** items, uint8_t items_count)
 
 void Menu::update(uint8_t action, uint64_t ms)
 {
-    if (action==0)
+    if (redrawRequired)
     {
-        if (redrawRequired)
-        {
-            redraw();
-        }
+        redraw();
+    }
 
+    if (action==MENU_ACTION_NONE)
+    {
         updateBlink(ms);
-
         return;
     }
 
@@ -65,6 +64,7 @@ void Menu::update(uint8_t action, uint64_t ms)
         if (_currentItem<_items_count-1)
         {
             refresh(_currentDisplayLine++, _currentItem++);
+            return;
         }
     }
     else if (action==MENU_ACTION_UP)
@@ -72,14 +72,9 @@ void Menu::update(uint8_t action, uint64_t ms)
         if (_currentItem>0)
         {
             refresh(_currentDisplayLine--, _currentItem--);
+            return;
         }
     }
-    else if (_currentDisplayLine>200)
-    {
-        refresh(_currentDisplayLine, _currentItem);
-    }
-
-    updateBlink(ms);
 }
 
 void Menu::refresh(uint8_t prevDisplayLine, uint8_t prevItem)

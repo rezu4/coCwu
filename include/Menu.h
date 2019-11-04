@@ -21,8 +21,6 @@ class Menu : public MenuItem
         void refresh(uint8_t prevDisplayLine, uint8_t prevItem);
         uint8_t _currentItem;
         uint8_t _currentDisplayLine;
-        uint64_t _lastBlink;
-        uint8_t _blinkState=1;
         MenuItem** _items;
         uint8_t _items_count;
         void updateBlink(uint64_t ms);

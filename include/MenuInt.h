@@ -19,11 +19,7 @@ class MenuInt : public MenuItem
         char const * _unit;
         uint16_t _minValue;
         uint16_t _maxValue;
-        uint64_t _lastBlink;
-        uint8_t _blinkState=1;
-        uint8_t _editState=0;
-        char _template[10];
-        uint16_t _curValue;
+        static uint16_t _curValue;
 };
 
 #endif // MENUINT_H

@@ -22,23 +22,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="arduino_pollyfils.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="lib/display/BaseDisplay.h" />
-		<Unit filename="lib/menu/Menu.h" />
-		<Unit filename="lib/menu/MenuInt.h" />
-		<Unit filename="lib/menu/MenuItem.h" />
-		<Unit filename="lib/menu/MenuSelect.h" />
-		<Unit filename="include/WindowsDisplay.h" />
-		<Unit filename="include/arduino_pollyfils.h" />
-		<Unit filename="main.cpp" />
 		<Unit filename="lib/display/BaseDisplay.cpp" />
+		<Unit filename="lib/display/BaseDisplay.h" />
 		<Unit filename="lib/menu/Menu.cpp" />
+		<Unit filename="lib/menu/Menu.h" />
 		<Unit filename="lib/menu/MenuInt.cpp" />
+		<Unit filename="lib/menu/MenuInt.h" />
 		<Unit filename="lib/menu/MenuItem.cpp" />
+		<Unit filename="lib/menu/MenuItem.h" />
 		<Unit filename="lib/menu/MenuSelect.cpp" />
-		<Unit filename="src/WindowsDisplay.cpp" />
+		<Unit filename="lib/menu/MenuSelect.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

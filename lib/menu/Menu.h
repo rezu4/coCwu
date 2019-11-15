@@ -1,8 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <MenuItem.h>
-#include <BaseDisplay.h>
+#include "MenuItem.h"
+#include "lib/display/BaseDisplay.h"
 
 class Menu : public MenuItem
 {

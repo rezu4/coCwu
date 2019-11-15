@@ -1,5 +1,5 @@
 #include "WindowsDisplay.h"
-#include<stdio.h>
+#include <cstring>
 #include "rlutil.h"
 
 WindowsDisplay::WindowsDisplay(uint8_t lines, uint8_t cols): BaseDisplay(lines, cols)

@@ -2,9 +2,9 @@
 #include "rlutil.h"
 
 #include "WindowsDisplay.h"
-#include "Menu.h"
-#include "MenuInt.h"
-#include "MenuSelect.h"
+#include "lib/menu/Menu.h"
+#include "lib/menu/MenuInt.h"
+#include "lib/menu/MenuSelect.h"
 
 #include "arduino_pollyfils.h"
 using namespace std;
@@ -35,7 +35,7 @@ int main()
     MenuInt mi(&main, "int example",10,50,"[C]");
     char const * selectOptions[] = {"select1", "s2", "select3"};
 
-    MenuSelect ms(&main,9"select ex",selectOptions, 3);
+    MenuSelect ms(&main,"select ex",selectOptions, 3);
 
     Menu::currentMenu = &main;
     //Menu::currentMenu = &ms;

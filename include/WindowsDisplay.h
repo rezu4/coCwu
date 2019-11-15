@@ -1,7 +1,7 @@
 #ifndef WINDOWSDISPLAY_H
 #define WINDOWSDISPLAY_H
 
-#include <BaseDisplay.h>
+#include "lib/display/BaseDisplay.h"
 
 
 class WindowsDisplay : public BaseDisplay

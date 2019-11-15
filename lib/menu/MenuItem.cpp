@@ -1,4 +1,4 @@
-#include "MenuItem.h"
+#include "lib/menu/MenuItem.h"
 
 MenuItem::MenuItem(MenuItem* parent, char const* label)
 {

@@ -1,6 +1,6 @@
-#include "Menu.h"
+#include "lib/menu/Menu.h"
 #include <cstddef>
-#include "BaseDisplay.h"
+#include "lib/display/BaseDisplay.h"
 
 Menu::Menu(char const * label): MenuItem(label)
 {

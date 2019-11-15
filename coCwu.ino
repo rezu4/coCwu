@@ -67,10 +67,33 @@ void setup()
 
 void loop()
 {
+  char str[20];
   if (!isrHandled)
   {
     handleInterrupt();
   }
+
+  if (menu_action != MENU_ACTION_NONE)
+  {
+    if (menu_action==MENU_ACTION_UP)
+    {
+      Serial.println("UP");
+    }
+    else if (menu_action==MENU_ACTION_DOWN)
+    {
+      Serial.println("DOWN");
+    }
+    else if (menu_action==MENU_ACTION_ENTER)
+    {
+      Serial.println("ENTER");
+    }
+    else if (menu_action==MENU_ACTION_ESC)
+    {
+      Serial.println("ESC");
+    }
+  }
+
+  menu_action = MENU_ACTION_NONE;
 
   //readINTCAPAB
   //sprintf(str, "pin=%d val=%d", pin, val);
@@ -129,15 +152,12 @@ void handleRotaryEncoder(uint16_t gpioAB)
   {
     if (a != b)
     {
-      rotaryEncoderPos--;
+      menu_action = MENU_ACTION_DOWN;      
     }
     else
     {
-      rotaryEncoderPos++;
-    }
-
-    sprintf(str, "%d %d %d", a, b, rotaryEncoderPos);
-    Serial.println(str);
+      menu_action = MENU_ACTION_UP;
+    }    
   }
 
   rotaryEncodeLineAPrev = a;

@@ -2,7 +2,7 @@
 #define MENU_H
 
 #include "MenuItem.h"
-#include "lib/display/BaseDisplay.h"
+#include "BaseDisplay.h"
 
 class Menu : public MenuItem
 {

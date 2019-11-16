@@ -2,9 +2,9 @@
 #include "rlutil.h"
 
 #include "WindowsDisplay.h"
-#include "lib/menu/Menu.h"
-#include "lib/menu/MenuInt.h"
-#include "lib/menu/MenuSelect.h"
+#include "Menu.h"
+#include "MenuInt.h"
+#include "MenuSelect.h"
 
 #include "arduino_pollyfils.h"
 using namespace std;

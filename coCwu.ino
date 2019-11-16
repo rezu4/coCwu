@@ -1,6 +1,10 @@
 #include <Wire.h>
 #include <Adafruit_MCP23017.h>
-#include "lib\menu\MenuItem.h"
+#include "MenuItem.h"
+#include "Menu.h"
+#include "MenuInt.h"
+#include "MenuSelect.h"
+#include "LcdDisplay.h"
 
 Adafruit_MCP23017 mcp;
 
@@ -29,12 +33,26 @@ uint8_t rotaryEncoderPos = 0;
 uint8_t buttonEnterPrev = HIGH;
 uint8_t buttonEscPrev = HIGH;
 
+//LiquidCrystal_I2C lcd(0x27,16,2); // Check I2C address of LCD, normally 0x27 or 0x3F
+LcdDisplay lcdDisplay(16,2);
+
+// current menu action
 uint8_t menu_action = MENU_ACTION_NONE;
 
+MenuInt mi(NULL, "int example",10,50,"[C]");
+
 void setup()
-{
+{ 
+Menu::currentMenu = &mi;
+Menu::display = &lcdDisplay;
+
+
+  
+ 
   Serial.begin(115200); // to view on Serial monitor
   Serial.println("MCP23007 Interrupt Test with RE");
+
+   lcdDisplay.begin();
 
   pinMode(arduinoIntPin, INPUT);
 
@@ -77,21 +95,28 @@ void loop()
   {
     if (menu_action==MENU_ACTION_UP)
     {
+     //  lcd.setCursor(0,0); lcd.print("UP            ");
       Serial.println("UP");
     }
     else if (menu_action==MENU_ACTION_DOWN)
     {
+      //lcd.setCursor(0,0); lcd.print("DOWN          ");
+      //lcdDisplay.print(8,0,"DOWN", DISPLAY_ALIGN_CENTER, 16);
       Serial.println("DOWN");
     }
     else if (menu_action==MENU_ACTION_ENTER)
     {
+      //lcd.setCursor(0,0); lcd.print("ENTER         ");
       Serial.println("ENTER");
     }
     else if (menu_action==MENU_ACTION_ESC)
     {
+      //lcd.setCursor(0,0); lcd.print("ESC          ");
       Serial.println("ESC");
     }
   }
+
+  mi.update(menu_action, millis());
 
   menu_action = MENU_ACTION_NONE;
 

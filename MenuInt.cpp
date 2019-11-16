@@ -1,5 +1,5 @@
-#include "lib/menu/MenuInt.h"
-#include "lib/menu/Menu.h"
+#include "MenuInt.h"
+#include "Menu.h"
 #include <cstdlib>
 
 MenuInt::MenuInt(char const * label, uint16_t min, uint16_t max, char const * unit): MenuItem(label)

@@ -1,7 +1,7 @@
 #ifndef MENUINT_H
 #define MENUINT_H
 
-#include "lib\menu\MenuItem.h"
+#include "MenuItem.h"
 
 
 class MenuInt : public MenuItem

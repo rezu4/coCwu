@@ -1,5 +1,5 @@
-#include "lib/menu/MenuSelect.h"
-#include "lib/menu/Menu.h"
+#include "MenuSelect.h"
+#include "Menu.h"
 #include <cstring>
 
 MenuSelect::MenuSelect(char const * label, char const** options, uint8_t optionCount): MenuItem(label)

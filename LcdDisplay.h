@@ -7,7 +7,7 @@
 class LcdDisplay : public BaseDisplay
 {
     public:
-        LcdDisplay(uint8_t lines, uint8_t cols);
+        LcdDisplay(LiquidCrystal_I2C *lcd, uint8_t lines, uint8_t cols);
 
         virtual void print(uint8_t x, uint8_t y, const char str[], uint8_t align = 0, uint8_t lineWidth=0);
         virtual void clearLine(uint8_t y);

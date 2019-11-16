@@ -3,10 +3,9 @@
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
 
-LcdDisplay::LcdDisplay(uint8_t lines, uint8_t cols): BaseDisplay(lines, cols)
+LcdDisplay::LcdDisplay(LiquidCrystal_I2C *lcd, uint8_t lines, uint8_t cols): BaseDisplay(lines, cols)
 {
-	LiquidCrystal_I2C lcd(0x27,lines,cols);
-	_lcd = &lcd;
+	_lcd = lcd;
     this->lines = lines;
     this->cols = cols;
 	

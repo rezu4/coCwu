@@ -87,7 +87,7 @@ void MenuSelect::update(uint8_t action, uint64_t ms)
     {
         Menu::display->clearLine(0);
         Menu::display->clearLine(1);
-        Menu::display->print(Menu::display->getCols()/2, (uint8_t)1, label,DISPLAY_ALIGN_CENTER);
+        Menu::display->print(Menu::display->getLines()/2, (uint8_t)1, label,DISPLAY_ALIGN_CENTER);
         redrawRequired = false;
         refreshValue = true;
     }
@@ -111,7 +111,7 @@ void MenuSelect::update(uint8_t action, uint64_t ms)
         {
             _template[l]=char(0);
         }
-        Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
+        Menu::display->print(Menu::display->getLines()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
         return;
     }
 
@@ -127,11 +127,11 @@ void MenuSelect::update(uint8_t action, uint64_t ms)
 
             if (_blinkState)
             {
-                Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
+                Menu::display->print(Menu::display->getLines()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
             }
             else
             {
-                 Menu::display->print(Menu::display->getCols()/2, (uint8_t)0, "",DISPLAY_ALIGN_CENTER,8);
+                 Menu::display->print(Menu::display->getLines()/2, (uint8_t)0, "",DISPLAY_ALIGN_CENTER,8);
             }
         }
     }

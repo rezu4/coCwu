@@ -80,15 +80,15 @@ void Menu::update(uint8_t action, uint64_t ms)
 void Menu::refresh(uint8_t prevDisplayLine, uint8_t prevItem)
 {
     uint8_t newDisplayLine = _currentDisplayLine;
-    uint8_t lines = Menu::display->getLines();
+    uint8_t cols = Menu::display->getCols();
 
     if (_currentDisplayLine==0xFF)
     {
         newDisplayLine=0;
     }
-    else if (_currentDisplayLine>=lines)
+    else if (_currentDisplayLine>=cols)
     {
-        newDisplayLine=lines-1;
+        newDisplayLine=cols-1;
     }
 
     if (newDisplayLine != _currentDisplayLine || redrawRequired)

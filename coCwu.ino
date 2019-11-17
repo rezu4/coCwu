@@ -44,13 +44,24 @@ uint8_t menu_action = MENU_ACTION_NONE;
 
 Menu main("main");
 MenuInt mi(&main, "int example",10,50,"[C]");
-MenuItem* mainItems[] = { &mi};
+
+char const * selectOptions[] = {"select1", "s2", "select3"};
+MenuSelect ms(&main,"select ex",selectOptions, 3);
+
+Menu o1(&main,"option1");
+Menu o11(&main,"option11");
+Menu o12(&main,"option12");
+Menu o13(&main,"option13");
+MenuItem* o1tems[] = {&o11, &o12, &o13};
+
+MenuItem* mainItems[] = { &mi, &o1, &ms};
 
 
 void setup()
 { 
    lcdDisplay.begin();
    main.setItems(mainItems, sizeof(mainItems)/sizeof(MenuItem*));
+   o1.setItems(o1tems, sizeof(o1tems)/sizeof(MenuItem*));
 Menu::currentMenu = &main;
 Menu::display = &lcdDisplay;
 

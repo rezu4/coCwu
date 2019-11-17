@@ -121,6 +121,12 @@ void Menu::redraw()
         {
             MenuItem* item = *(_items+menuIdx);
             Menu::display->print(0,i,item->getLabel(),DISPLAY_ALIGN_LEFT,0xFF);
+
+            char const * labelExt = item->getLabelExt();
+            if (labelExt!=NULL)
+            {
+                Menu::display->print(Menu::display->getLines()-1, i, labelExt, DISPLAY_ALIGN_RIGHT);
+            }
         }
         else {
             Menu::display->clearLine(i);
@@ -144,6 +150,11 @@ void Menu::updateBlink(uint64_t ms)
         if (_blinkState)
         {
             Menu::display->print(0,_currentDisplayLine,item->getLabel(),DISPLAY_ALIGN_LEFT,0xFF);
+            char const * labelExt = item->getLabelExt();
+            if (labelExt!=NULL)
+            {
+                Menu::display->print(Menu::display->getLines()-1, _currentDisplayLine, labelExt, DISPLAY_ALIGN_RIGHT);
+            }
         }
         else {
             Menu::display->clearLine(_currentDisplayLine);

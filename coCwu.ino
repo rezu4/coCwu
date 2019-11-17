@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "MenuInt.h"
 #include "MenuSelect.h"
+#include "MenuCheck.h"
 #include "LcdDisplay.h"
 #include <LiquidCrystal_I2C.h>
 
@@ -54,7 +55,9 @@ Menu o12(&main,"option12");
 Menu o13(&main,"option13");
 MenuItem* o1tems[] = {&o11, &o12, &o13};
 
-MenuItem* mainItems[] = { &mi, &o1, &ms};
+MenuCheck mc1(&main,"check1 ex");
+
+MenuItem* mainItems[] = { &mi, &mc1, &o1, &ms};
 
 
 void setup()

@@ -22,16 +22,25 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="lib/display/BaseDisplay.cpp" />
-		<Unit filename="lib/display/BaseDisplay.h" />
-		<Unit filename="lib/menu/Menu.cpp" />
-		<Unit filename="lib/menu/Menu.h" />
-		<Unit filename="lib/menu/MenuInt.cpp" />
-		<Unit filename="lib/menu/MenuInt.h" />
-		<Unit filename="lib/menu/MenuItem.cpp" />
-		<Unit filename="lib/menu/MenuItem.h" />
-		<Unit filename="lib/menu/MenuSelect.cpp" />
-		<Unit filename="lib/menu/MenuSelect.h" />
+		<Unit filename="BaseDisplay.cpp" />
+		<Unit filename="BaseDisplay.h" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
+		<Unit filename="MenuCheck.cpp" />
+		<Unit filename="MenuCheck.h" />
+		<Unit filename="MenuInt.cpp" />
+		<Unit filename="MenuInt.h" />
+		<Unit filename="MenuItem.cpp" />
+		<Unit filename="MenuItem.h" />
+		<Unit filename="MenuSelect.cpp" />
+		<Unit filename="MenuSelect.h" />
+		<Unit filename="menu_test/WindowsDisplay.cpp" />
+		<Unit filename="menu_test/WindowsDisplay.h" />
+		<Unit filename="menu_test/arduino_pollyfils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menu_test/arduino_pollyfils.h" />
+		<Unit filename="menu_test/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

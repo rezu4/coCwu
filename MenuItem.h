@@ -15,8 +15,10 @@ class MenuItem
         MenuItem(MenuItem* parent, char const * label);
         MenuItem* parent;
         char const * label;
+        char const * labelExt;
         uint8_t idx;
         virtual const char* getLabel();
+        virtual const char* getLabelExt();
         virtual void update(uint8_t action, uint64_t ms) =0;
         bool redrawRequired = true;
     protected:

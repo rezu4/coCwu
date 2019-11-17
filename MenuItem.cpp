@@ -1,9 +1,11 @@
 #include "MenuItem.h"
+#include <cstddef>
 
 MenuItem::MenuItem(MenuItem* parent, char const* label)
 {
     this->parent = parent;
     this->label = label;
+    this->labelExt = NULL;
 }
 
 uint8_t MenuItem::_blinkState=1;
@@ -20,4 +22,10 @@ const char* MenuItem::getLabel()
 {
     return label;
 }
+
+const char* MenuItem::getLabelExt()
+{
+    return labelExt;
+}
+
 

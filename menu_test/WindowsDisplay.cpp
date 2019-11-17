@@ -10,20 +10,20 @@ WindowsDisplay::WindowsDisplay(uint8_t lines, uint8_t cols): BaseDisplay(lines, 
     _x=10;
     _y=10;
 
-    for (int i = 0; i < cols+2; i++)
+    for (int i = 0; i < lines+2; i++)
     {
         gotoxy(_x-1+i, _y-1);
         printf("-");
-        gotoxy(_x-1+i, _y+lines);
+        gotoxy(_x-1+i, _y+cols);
         printf("-");
     }
 
-    for (int i = 0; i < lines; i++)
+    for (int i = 0; i < cols; i++)
     {
         gotoxy(_x-1, _y+i);
         printf("|");
 
-        gotoxy(_x+cols, _y+i);
+        gotoxy(_x+lines, _y+i);
         printf("|");
     }
 }
@@ -31,9 +31,9 @@ WindowsDisplay::WindowsDisplay(uint8_t lines, uint8_t cols): BaseDisplay(lines, 
  void WindowsDisplay:: print(uint8_t x, uint8_t y, const char str[], uint8_t align, uint8_t lineWidth)
  {
     uint8_t l = strlen(str);
-    if (lineWidth>cols)
+    if (lineWidth>lines)
     {
-        lineWidth=cols;
+        lineWidth=lines;
     }
 
     uint8_t i;
@@ -41,12 +41,12 @@ WindowsDisplay::WindowsDisplay(uint8_t lines, uint8_t cols): BaseDisplay(lines, 
     uint8_t tbeg=0;
     uint8_t tend=0;
 
-    for (i=0;i<cols;i++)
+    for (i=0;i<lines;i++)
     {
         _template[i] = ' ';
     }
 
-    _template[cols+1]=char(0);
+    _template[lines+1]=char(0);
 
     if (align==DISPLAY_ALIGN_LEFT)
     {
@@ -103,5 +103,5 @@ uint8_t WindowsDisplay:: getCols()
 
 void WindowsDisplay::clearLine(uint8_t y)
 {
-    print(0,y," ",DISPLAY_ALIGN_LEFT, cols);
+    print(0,y," ",DISPLAY_ALIGN_LEFT, lines);
 }

@@ -15,9 +15,13 @@ class MenuSelect : public MenuItem
     protected:
 
     private:
+        void refresh(uint8_t prevDisplayLine, uint8_t prevItem);
+        void redraw();
+        void updateBlink(uint64_t ms);
         char const ** _options;
         uint8_t _optionCount;
-        static uint8_t _curValue;
+        uint8_t _currentItem;
+        uint8_t _currentDisplayLine;
 };
 
 #endif // MENUSELECT_H

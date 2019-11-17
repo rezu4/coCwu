@@ -2,11 +2,15 @@
 #include "Menu.h"
 #include <cstring>
 
+char const *  MenuSelectSelected = "*";
+
 MenuSelect::MenuSelect(char const * label, char const** options, uint8_t optionCount): MenuItem(label)
 {
     _options = options;
     _optionCount = optionCount;
     value=0;
+     _currentItem=0;
+    _currentDisplayLine=0;
 }
 
 MenuSelect::MenuSelect(MenuItem* parent, char const * label, char const** options, uint8_t optionCount): MenuItem(parent, label)
@@ -14,125 +18,138 @@ MenuSelect::MenuSelect(MenuItem* parent, char const * label, char const** option
     _options = options;
     _optionCount = optionCount;
     value=0;
+     _currentItem=0;
+    _currentDisplayLine=0;
 }
-
-uint8_t MenuSelect::_curValue=0;
 
 void MenuSelect::update(uint8_t action, uint64_t ms)
 {
-
-     bool refreshValue = false;
-
-    if (action==MENU_ACTION_ENTER)
-    {
-        if (_editState)
-        {
-            value = _curValue;
-        }
-        else
-        {
-           _curValue = value;
-        }
-        _editState = !_editState;
-
-        refreshValue = true;
-    }
-    else if (action==MENU_ACTION_ESC)
-    {
-        if (_editState)
-        {
-            _editState =false;
-            _curValue = value;
-            refreshValue = true;
-        }
-        else
-        {
-            Menu::setCurrentMenu(parent);
-            if (Menu::currentMenu)
-            {
-                Menu::currentMenu->update(MENU_ACTION_NONE, ms);
-            }
-            return;
-        }
-    }
-    else {
-        if (_editState)
-        {
-            uint16_t prevValue = _curValue;
-
-            if (action==MENU_ACTION_DOWN)
-            {
-                if (_curValue<_optionCount-1)
-                {
-                    _curValue++;
-                }
-
-            }
-            else if (action==MENU_ACTION_UP)
-            {
-                if (_curValue>0)
-                {
-                    _curValue--;
-                }
-            }
-
-            refreshValue = prevValue!=_curValue;
-        }
-        else{
-            _curValue = value;
-        }
-    }
-
     if (redrawRequired)
     {
-        Menu::display->clearLine(0);
-        Menu::display->clearLine(1);
-        Menu::display->print(Menu::display->getLines()/2, (uint8_t)1, label,DISPLAY_ALIGN_CENTER);
-        redrawRequired = false;
-        refreshValue = true;
+        redraw();
     }
 
-    if (refreshValue)
+    if (action==MENU_ACTION_NONE)
     {
-        //_template
-        char const * s = *(_options+_curValue);
-        uint8_t l=strlen(s);
-        for (uint8_t i=0;i<l;i++)
-        {
-            _template[i]=*(s+i);
-        }
-        if (_curValue==value)
-        {
-            _template[l]=' ';
-            _template[l+1]='*';
-            _template[l+2]=char(0);
-        }
-        else
-        {
-            _template[l]=char(0);
-        }
-        Menu::display->print(Menu::display->getLines()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
+        updateBlink(ms);
         return;
     }
 
-
-    if (_editState)
+    if (action==MENU_ACTION_ENTER)
     {
-        uint64_t elapsed = ms-_lastBlink;
+        value = _currentItem;
+        redraw();
+        return;
+    }
 
-        if (_blinkState && elapsed>700 || !_blinkState && elapsed>200)
+    if (action==MENU_ACTION_ESC)
+    {
+        Menu::setCurrentMenu(parent);
+        if (Menu::currentMenu)
         {
-            _blinkState=!_blinkState;
-            _lastBlink = ms;
+            Menu::currentMenu->update(MENU_ACTION_NONE, ms);
+        }
 
-            if (_blinkState)
+        return;
+    }
+
+    if (action==MENU_ACTION_DOWN)
+    {
+        if (_currentItem<_optionCount-1)
+        {
+            refresh(_currentDisplayLine++, _currentItem++);
+            return;
+        }
+    }
+    else if (action==MENU_ACTION_UP)
+    {
+        if (_currentItem>0)
+        {
+            refresh(_currentDisplayLine--, _currentItem--);
+            return;
+        }
+    }
+}
+
+void MenuSelect::refresh(uint8_t prevDisplayLine, uint8_t prevItem)
+{
+    uint8_t newDisplayLine = _currentDisplayLine;
+    uint8_t cols = Menu::display->getCols();
+
+    if (_currentDisplayLine==0xFF)
+    {
+        newDisplayLine=0;
+    }
+    else if (_currentDisplayLine>=cols)
+    {
+        newDisplayLine=cols-1;
+    }
+
+    if (newDisplayLine != _currentDisplayLine || redrawRequired)
+    {
+        _currentDisplayLine = newDisplayLine;
+       redraw();
+    }
+
+    if (prevDisplayLine!=_currentDisplayLine)
+    {
+        if (_blinkState==0)
+        {
+            _blinkState=1;
+            char const * option = *(_options+prevItem);
+            Menu::display->print(0, prevDisplayLine,option,DISPLAY_ALIGN_LEFT,0xFF);
+        }
+    }
+}
+
+void MenuSelect::redraw()
+{
+    uint8_t optionIdx;
+    uint8_t cols = Menu::display->getCols();
+
+    for (uint8_t i=0;i<cols;i++)
+    {
+        optionIdx=_currentItem-_currentDisplayLine + i;
+
+        if (optionIdx<_optionCount)
+        {
+            char const * option = *(_options+optionIdx);
+            Menu::display->print(0,i,option, DISPLAY_ALIGN_LEFT,0xFF);
+
+            if (value==optionIdx)
             {
-                Menu::display->print(Menu::display->getLines()/2, (uint8_t)0, _template,DISPLAY_ALIGN_CENTER,8);
+                Menu::display->print(Menu::display->getLines()-1, i, MenuSelectSelected, DISPLAY_ALIGN_RIGHT);
             }
-            else
+        }
+        else {
+            Menu::display->clearLine(i);
+        }
+    }
+
+    redrawRequired = false;
+}
+
+void MenuSelect::updateBlink(uint64_t ms)
+{
+    uint64_t elapsed = ms-_lastBlink;
+
+    if (_blinkState && elapsed>700 || !_blinkState && elapsed>200)
+    {
+        _blinkState=!_blinkState;
+        _lastBlink = ms;
+
+        char const * option = *(_options+_currentItem);
+
+        if (_blinkState)
+        {
+            Menu::display->print(0,_currentDisplayLine,option,DISPLAY_ALIGN_LEFT,0xFF);
+            if (value==_currentItem)
             {
-                 Menu::display->print(Menu::display->getLines()/2, (uint8_t)0, "",DISPLAY_ALIGN_CENTER,8);
+                Menu::display->print(Menu::display->getLines()-1, _currentDisplayLine, MenuSelectSelected, DISPLAY_ALIGN_RIGHT);
             }
+        }
+        else {
+            Menu::display->clearLine(_currentDisplayLine);
         }
     }
 }

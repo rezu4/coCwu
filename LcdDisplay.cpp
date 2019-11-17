@@ -19,10 +19,15 @@ void LcdDisplay::begin()
 
  void LcdDisplay:: print(uint8_t x, uint8_t y, const char str[], uint8_t align, uint8_t lineWidth)
  {
+	   char strd[20];
+   sprintf(strd, "%d %d %d %d", x,y, align, lineWidth);
+  Serial.println(strd);
+  Serial.println(str);
+  
     uint8_t l = strlen(str);
-    if (lineWidth>cols)
+    if (lineWidth>lines)
     {
-        lineWidth=cols;
+        lineWidth=lines;
     }
 
     uint8_t i;
@@ -30,12 +35,12 @@ void LcdDisplay::begin()
     uint8_t tbeg=0;
     uint8_t tend=0;
 
-    for (i=0;i<cols;i++)
+    for (i=0;i<lines;i++)
     {
         _template[i] = ' ';
     }
 
-    _template[cols+1]=char(0);
+    _template[lines+1]=char(0);
 
     if (align==DISPLAY_ALIGN_LEFT)
     {
@@ -74,7 +79,9 @@ void LcdDisplay::begin()
     }
 
     _template[tend+1]=(char)0;
-
+ sprintf(strd, "%d %d", tbeg, y);
+ Serial.println(strd);
+	Serial.println(_template+tbeg);
 	_lcd->setCursor(tbeg, y);
 	_lcd->print(_template+tbeg);
  }
@@ -91,5 +98,5 @@ uint8_t LcdDisplay:: getCols()
 
 void LcdDisplay::clearLine(uint8_t y)
 {
-    print(0,y," ",DISPLAY_ALIGN_LEFT, cols);
+    print(0,y," ",DISPLAY_ALIGN_LEFT, lines);
 }

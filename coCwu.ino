@@ -26,7 +26,7 @@ bool ledState2 = LOW;
 // ISR
 volatile boolean isrHandled = true;
 
-MenuInt mi(NULL, "int example",10,50,"[C]");
+
 
 // rotary
 uint8_t rotaryEncodeLineAPrev = HIGH;
@@ -42,14 +42,20 @@ LcdDisplay lcdDisplay(&lcd, 16,2);
 // current menu action
 uint8_t menu_action = MENU_ACTION_NONE;
 
+Menu main("main");
+MenuInt mi(&main, "int example",10,50,"[C]");
+MenuItem* mainItems[] = { &mi};
+
 
 void setup()
 { 
    lcdDisplay.begin();
-Menu::currentMenu = &mi;
+   main.setItems(mainItems, sizeof(mainItems)/sizeof(MenuItem*));
+Menu::currentMenu = &main;
 Menu::display = &lcdDisplay;
 
-
+//lcd.begin(D2, D1);
+//lcd.backlight();
   
  
   Serial.begin(115200); // to view on Serial monitor

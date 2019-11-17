@@ -111,9 +111,9 @@ void Menu::refresh(uint8_t prevDisplayLine, uint8_t prevItem)
 void Menu::redraw()
 {
     uint8_t menuIdx;
-    uint8_t lines = Menu::display->getLines();
+    uint8_t cols = Menu::display->getCols();
 
-    for (uint8_t i=0;i<lines;i++)
+    for (uint8_t i=0;i<cols;i++)
     {
         menuIdx=_currentItem-_currentDisplayLine + i;
 

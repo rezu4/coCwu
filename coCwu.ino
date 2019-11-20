@@ -17,16 +17,12 @@ byte mcpPinA = 9;  // PORT-A
 byte mcpPinB = 10;
 byte mcpPinRotary1 = 11;
 byte mcpPinRotary2 = 12;
+byte mcpPinBuzzer = 8;
 
-byte mcpLed1 = 0; // PORT-B
-byte mcpLed2 = 1;
-byte mcpLed3 = 2;
-byte mcpLed4 = 3;
 bool ledState2 = LOW;
 
 // ISR
 volatile boolean isrHandled = true;
-
 
 
 // rotary
@@ -36,6 +32,13 @@ uint8_t rotaryEncoderPos = 0;
 // buttons
 uint8_t buttonEnterPrev = HIGH;
 uint8_t buttonEscPrev = HIGH;
+
+// buzzer
+uint64_t buzzerEndTime;
+uint64_t buzzerLastTime;
+bool buzzerEnabled = false;
+
+uint16_t buzzerShortBeep = 5;
 
 LiquidCrystal_I2C lcd(0x27,16,2); // Check I2C address of LCD, normally 0x27 or 0x3F
 LcdDisplay lcdDisplay(&lcd, 16,2);
@@ -80,30 +83,28 @@ Menu::display = &lcdDisplay;
   pinMode(arduinoIntPin, INPUT);
 
   mcp.begin();  // use default address 0
-  mcp.setupInterrupts(false, false, LOW); // The mcp output interrupt pin.
+  mcp.setupInterrupts(false, false, LOW);
 
   mcp.pinMode(mcpPinA, INPUT);
-  mcp.pullUp(mcpPinA, HIGH);  // turn on a 100K pullup internally
+  mcp.pullUp(mcpPinA, HIGH);
   mcp.setupInterruptPin(mcpPinA, CHANGE);
 
   mcp.pinMode(mcpPinB, INPUT);
-  mcp.pullUp(mcpPinB, HIGH);  // turn on a 100K pullup internally
+  mcp.pullUp(mcpPinB, HIGH);
   mcp.setupInterruptPin(mcpPinB, CHANGE);
 
   mcp.pinMode(mcpPinRotary1, INPUT);
-  mcp.pullUp(mcpPinRotary1, HIGH);  // turn on a 100K pullup internally
+  mcp.pullUp(mcpPinRotary1, HIGH);
   mcp.setupInterruptPin(mcpPinRotary1, CHANGE);
 
   mcp.pinMode(mcpPinRotary2, INPUT);
-  mcp.pullUp(mcpPinRotary2, HIGH);  // turn on a 100K pullup internally
-  //mcp.setupInterruptPin(mcpPinRotary2, CHANGE);
-
-  mcp.pinMode(mcpLed1, OUTPUT); // on the other port to avoid echoing
-  mcp.pinMode(mcpLed2, OUTPUT);
-  mcp.pinMode(mcpLed3, OUTPUT);
-  mcp.pinMode(mcpLed4, OUTPUT);
+  mcp.pullUp(mcpPinRotary2, HIGH);
+  
   mcp.readGPIOAB(); // Initialise for interrupts.
   attachInterrupt(digitalPinToInterrupt(arduinoIntPin), intCallBack, CHANGE);
+
+  mcp.pinMode(mcpPinBuzzer, OUTPUT);  
+   mcp.digitalWrite(mcpPinBuzzer,LOW);
 }
 
 void loop()
@@ -113,6 +114,17 @@ void loop()
   {
     handleInterrupt();
   }
+
+  uint64_t ms  = millis();
+  if (buzzerEnabled)
+  {
+    if (ms>buzzerEndTime)
+    {
+      mcp.digitalWrite(mcpPinBuzzer,LOW);
+      buzzerEnabled = false;
+    }
+  }
+
 
   if (menu_action != MENU_ACTION_NONE)
   {
@@ -155,8 +167,24 @@ void intCallBack()
   isrHandled = false;
 }
 
-void handleInterrupt()
+void sound(uint16_t msTime)
 {
+  if (!buzzerEnabled)
+  {
+    uint64_t ms = millis();
+    
+    if (buzzerLastTime+100<ms)
+    {
+      buzzerLastTime = ms;
+      buzzerEndTime = ms+msTime;
+      mcp.digitalWrite(mcpPinBuzzer,HIGH);
+      buzzerEnabled = true;
+    }
+  }
+}
+
+void handleInterrupt()
+{  
   isrHandled = true;
   uint8_t pin = mcp.getLastInterruptPin();
   uint16_t gpioAB = mcp.readGPIOAB();
@@ -173,6 +201,7 @@ void handleInterrupt()
       if (buttonEnterPrev != btnPinVal && btnPinVal == 0)
       {
         menu_action = MENU_ACTION_ENTER;
+        sound(buzzerShortBeep);   
       }
 
       buttonEnterPrev = btnPinVal;
@@ -183,6 +212,7 @@ void handleInterrupt()
       if (buttonEscPrev != btnPinVal && btnPinVal == 0)
       {
         menu_action = MENU_ACTION_ESC;
+        sound(buzzerShortBeep);   
       }
 
       buttonEscPrev = btnPinVal;
@@ -200,11 +230,13 @@ void handleRotaryEncoder(uint16_t gpioAB)
   {
     if (a != b)
     {
-      menu_action = MENU_ACTION_DOWN;      
+      menu_action = MENU_ACTION_DOWN;     
+      sound(buzzerShortBeep);    
     }
     else
     {
       menu_action = MENU_ACTION_UP;
+      sound(buzzerShortBeep);   
     }    
   }
 

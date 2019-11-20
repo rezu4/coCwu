@@ -43,8 +43,12 @@ void Menu::update(uint8_t action, uint64_t ms)
 
     if (action==MENU_ACTION_ENTER)
     {
-        Menu::setCurrentMenu(*(_items+_currentItem));
-        Menu::currentMenu->update(MENU_ACTION_NONE, ms);
+        MenuItem* item = *(_items+_currentItem);
+        if (item->isEnabled())
+        {
+            Menu::setCurrentMenu(item);
+            Menu::currentMenu->update(MENU_ACTION_NONE, ms);
+        }
         return;
     }
 
@@ -140,7 +144,7 @@ void Menu::updateBlink(uint64_t ms)
 {
     uint64_t elapsed = ms-_lastBlink;
 
-    if (_blinkState && elapsed>700 || !_blinkState && elapsed>200)
+    if ((_blinkState && elapsed>700) || (!_blinkState && elapsed>200))
     {
         _blinkState=!_blinkState;
         _lastBlink = ms;

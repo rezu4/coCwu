@@ -28,4 +28,9 @@ const char* MenuItem::getLabelExt()
     return labelExt;
 }
 
+bool  MenuItem::isEnabled()
+{
+    return true;
+}
+
 

@@ -18,6 +18,7 @@ class MenuItem
         char const * labelExt;
         uint8_t idx;
         virtual const char* getLabel();
+        virtual bool isEnabled();
         virtual const char* getLabelExt();
         virtual void update(uint8_t action, uint64_t ms) =0;
         bool redrawRequired = true;

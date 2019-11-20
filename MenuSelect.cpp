@@ -133,7 +133,7 @@ void MenuSelect::updateBlink(uint64_t ms)
 {
     uint64_t elapsed = ms-_lastBlink;
 
-    if (_blinkState && elapsed>700 || !_blinkState && elapsed>200)
+    if ((_blinkState && elapsed>700) || (!_blinkState && elapsed>200))
     {
         _blinkState=!_blinkState;
         _lastBlink = ms;
